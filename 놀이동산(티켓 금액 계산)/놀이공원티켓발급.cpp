@@ -7,7 +7,7 @@ int main()
  // 현재 날짜 구하기 // 
 
 	struct tm* t;
-	//time_t base = 0;  //1970년임   현재날짜를 넣고 싶다면 base에 time(NULL)을 넣어주면 된다. 
+	//time_t base = 0;  //1970년 1월 1일.   현재날짜를 넣고 싶다면 base에 time(NULL)을 넣어주면 된다. 
 	time_t base = time(NULL);
 	
 	t = localtime(&base);
@@ -18,47 +18,81 @@ int main()
  
 	int ticketAll; //이용권    
 	int selectTime; //주간 야간 이용권   
-	int ticketAmount; //티켓 발행 갯수  
-	int inputYear; //태어난 년월일 
-	int currentDate; //현재날짜 
-	int age; // 나이
+	int ticketAmount; //티켓 발행 갯수   
 	int discount; //우대 
 	int ticketIssue; //티켓발행 
 	int ticketPrice; //티켓요금
-	int todayDate; //현재 날짜 
-
+	int currentDate; //현재날짜  
+	int startAgain; //재구매 
+ 	int bill;  //영수증
+	  
 	const int allDayAdult = 59000, allDayTeen = 52000, allDayKid = 47000, allDayBaby = 15000; // 파크+박물관 + 주간 
 	const int allAterAdult = 48000, allAfterTeen = 42000, allAfterKid = 36000, allAfterBaby = 15000; // 파크+박물관 +야간 
-          const int dayAdult = 56000, dayTeenAger =50000, dayKid =46000, dayBaby =15000;  // 파크 + 주간 
+    const int dayAdult = 56000, dayTeenAger =50000, dayKid =46000, dayBaby =15000;  // 파크 + 주간 
 	const int afterAdult = 45000, afterTeen = 40000, afterKid = 35000, afterBaby = 15000; //파크 + 야간
 	const int babyFree = 0;
 
 	
-	age = (todayDate - inputYear)/ 1000;  
-	         	
 	
+	int bornYear; // 태어난년월일
+	int bornYearFront; // 태어난년도 
+	int bornDate; // 태어난월일
+	int age; // 나이  
+	
+	age = (currentDate - bornYearFront)+1;
+	
+	
+	do {
+		
+	
+	
+	do{
 	printf("이용권을 선택하세요.\n 1.놀이공원+민속박물관\n 2.놀이공원\n" );
 	scanf("%d", &ticketAll);
 	printf("\n");
+	
+	
+ 			if(!(ticketAll==1 || ticketAll== 2 )){
+ 				printf("선택이 옳바르지 않습니다.\n");
+			 }
+	}while(ticketAll>2); 
+
+	do{
 	printf("권종을 선택하세요: \n 1.1Day(주간권-하루종일) \n 2.4Ater(야간권-4시 이후 입장)\n ");
 	scanf("%d",&selectTime);
 	printf("\n");
-	printf("생년 월 일을  입력하세요: ex) 20220321 \n");
-	scanf("%d", &inputYear);
+	
+	 		if(!(selectTime==1 || selectTime== 2 )){
+ 				printf("선택이 옳바르지 않습니다.\n");
+			 }
+	}while(selectTime>2); 
+
+	
+	
+	printf("주민등록번호 앞자리를 입력하세요: ex) 19940310 \n");
+	scanf("%d", &age);
+
+	do{   
 	printf("몇개를 주문하시겠습니까? (최대 10개)\n");
 	scanf("%d", &ticketAmount);	
 	printf("\n");
+	
+	
+	 		if(ticketAmount >=11){
+ 				printf("구매가능갯수를 초과하였습니다.\n");
+			 }
+	}while(ticketAmount>=11); 
+
+	do{  
 	printf("우대사항을 선택하세요.(나이 우대는 자동처리)\n 1.없음\n 2.장애인\n 3.국가유공자\n 4.다자녀\n 5.임산부\n");
 	scanf("%d", &discount);
 	printf("\n");
+
 	
-	
-	//티켓 구매  
-	if(ticketAmount<=10){
-	}			
-	else{
-		printf("구매가능갯수를 초과하였습니다.\n");
-	}
+	 		if(discount >=6){
+ 				printf("선택 가능한 사항이 없습니다.\n");
+			 }
+	}while(discount>=6); 
 	 
 	
 	//티켓 구매 
@@ -126,6 +160,7 @@ int main()
 	} 
 	if(age == 2 ){
 		if(ticketIssue ==1){
+			
 			ticketPrice = allDayTeen * ticketAmount;
 		}
 		else if(ticketIssue ==2){
@@ -190,19 +225,56 @@ int main()
 	} else {
 		printf("\n우대 사항이 없습니다.\n");
 	}
+	printf("\n");
 	
-	//입장료 총액 출력.
-	if (ticketPrice==0){
-		printf("\n무료 입장 입니다.\n");
-	}
-	else {
-		printf ("\n가격은 %d원 입니다.\n",ticketPrice) ;
-	}
-	
-	
+    printf("이용권을 더 구매하시겠습니까?\n 1.구매하기\n 2.아니요\n");
+    scanf("%d", &startAgain);
 
-	return 0; 
-	
- }
+    
+    }while(startAgain == 1);     //do ~ while 반복
+	 
+    
+    
+    
+    	
+    do{
+    	printf("영수증을 출력하시겠습니까?\n  1.예\n 2.아니요\n");
+		scanf("%d", &bill);	
+		 
+		 if(bill==1){
+ 				printf("영수증을 출력합니다.\n");
+ 					printf("=======================영수증=======================\n");
+    				printf("구매하신 티켓 : %d, 갯수 : %d, 우대사항 : %d, 총: %d원\n", ticketAll, ticketAmount, discount, ticketPrice); 
+					
+						printf("\n");
+						
+						scanf("현재 날짜 : %d", &currentDate);
+
+
+
+			 }
+			 else{
+			 	printf("영수증을 출력하지 않습니다. 이용해주셔서 감사합니다.\n");
+			 } 
+			 
+	}while(bill>2); 
+    
+    
+
+
+
+ 
+
+return 0;
+}
+
+		 
+ 
+ 
+ 
+
+
+
+ 
 
 
